@@ -2,107 +2,137 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Investor Advisory (Static)</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-    .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
-    label { display: block; margin-top: 10px; font-weight: bold; }
-    input, select, textarea, button { width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; }
-    button { background: #007BFF; color: white; border: none; cursor: pointer; margin-top: 15px; }
-    button:disabled { background: gray; cursor: not-allowed; }
-    pre { background: #222; color: #eee; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; }
+    h2 { margin-top: 30px; }
+    label { display: block; margin-top: 10px; }
+    select, input { width: 100%; padding: 5px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:disabled { background: #6c757d; cursor: not-allowed; }
+    pre { background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Investor Advisory Demo (Static)</h2>
-    
-    <label>Name:</label>
-    <input type="text" id="name" placeholder="Enter your name" />
+<div class="container">
+  <h1>Investor Advisory Demo (Static)</h1>
 
-    <label>Risk Category:</label>
-    <select id="riskCategory">
-      <option value="Conservative">Conservative</option>
-      <option value="Moderate">Moderate</option>
-      <option value="Aggressive">Aggressive</option>
+  <label>Name: <input type="text" id="name" value="Rahul Sharma"></label>
+
+  <label>Age Group:
+    <select id="ageGroup">
+      <option value="Under 30" data-points="17">Under 30</option>
+      <option value="31 to 40" data-points="12">31 to 40</option>
+      <option value="41 to 50" data-points="9">41 to 50</option>
+      <option value="51 to 60" data-points="1">51 to 60</option>
+      <option value="Over 60" data-points="0">Over 60</option>
     </select>
+  </label>
 
-    <label>Total Score:</label>
-    <input type="number" id="totalScore" placeholder="Enter score" />
+  <label>Investment Horizon:
+    <select id="investmentHorizon">
+      <option value="Less than 1 year" data-points="1">Less than 1 year</option>
+      <option value="1 to 3 years" data-points="4">1 to 3 years</option>
+      <option value="3 to 7 years" data-points="8">3 to 7 years</option>
+      <option value="More than 7 years" data-points="16" selected>More than 7 years</option>
+    </select>
+  </label>
 
-    <label>Questionnaire Inputs (JSON format):</label>
-    <textarea id="questionnaireInputs" rows="4" placeholder='{"age":"30-40","income":"Medium","horizon":"5 years"}'></textarea>
+  <label>Risk Attitude:
+    <select id="riskAttitude">
+      <option value="I prefer to stay away from risks" data-points="0">Stay away from risks</option>
+      <option value="I evaluate carefully before risks" data-points="1">Evaluate carefully</option>
+      <option value="I enjoy taking risks" data-points="3">Enjoy taking risks</option>
+      <option value="I get a thrill from risks" data-points="6">Thrill from risks</option>
+    </select>
+  </label>
 
-    <button onclick="generateAdvisory()">Generate Advisory</button>
+  <button onclick="generateAdvisory()">Generate Advisory</button>
 
-    <h3>Generated Advisory Report:</h3>
-    <pre id="output"></pre>
-  </div>
+  <h2>Generated Advisory Report (JSON)</h2>
+  <pre id="output"></pre>
+</div>
 
-  <script>
-    function generateAdvisory() {
-      const name = document.getElementById("name").value.trim();
-      const riskCategory = document.getElementById("riskCategory").value;
-      const totalScore = parseInt(document.getElementById("totalScore").value, 10) || 0;
-      let questionnaireInputs;
-      try {
-        questionnaireInputs = JSON.parse(document.getElementById("questionnaireInputs").value || "{}");
-      } catch (err) {
-        alert("Invalid JSON in Questionnaire Inputs!");
-        return;
-      }
+<script>
+function calculateScore() {
+  const selects = document.querySelectorAll("select");
+  let total = 0;
+  selects.forEach(sel => {
+    total += parseInt(sel.options[sel.selectedIndex].dataset.points || 0);
+  });
+  return total;
+}
 
-      // --- Static logic based on totalScore & riskCategory ---
-      let suggestedAllocation = [];
-      if (riskCategory === "Conservative") {
-        suggestedAllocation = [
-          { assetClass: "Bonds", recommendedPercent: 60, reasoning: "Stable returns with lower risk." },
-          { assetClass: "Equities", recommendedPercent: 20, reasoning: "Limited exposure for growth." },
-          { assetClass: "Cash", recommendedPercent: 20, reasoning: "Liquidity and safety." }
-        ];
-      } else if (riskCategory === "Moderate") {
-        suggestedAllocation = [
-          { assetClass: "Bonds", recommendedPercent: 40, reasoning: "Balance stability and income." },
-          { assetClass: "Equities", recommendedPercent: 40, reasoning: "Growth potential." },
-          { assetClass: "Cash", recommendedPercent: 20, reasoning: "Emergency needs." }
-        ];
-      } else if (riskCategory === "Aggressive") {
-        suggestedAllocation = [
-          { assetClass: "Equities", recommendedPercent: 70, reasoning: "Maximize growth with high risk tolerance." },
-          { assetClass: "Bonds", recommendedPercent: 20, reasoning: "Diversification with income." },
-          { assetClass: "Alternatives", recommendedPercent: 10, reasoning: "Higher return opportunities." }
-        ];
-      }
+function mapScoreToCategory(score) {
+  if(score <= 28) return "Conservative Investor";
+  if(score <= 37) return "Moderately Conservative Investor";
+  if(score <= 46) return "Moderate Investor";
+  if(score <= 56) return "Moderately Aggressive Investor";
+  return "Aggressive Investor";
+}
 
-      const report = {
-        investorProfile: {
-          name: name,
-          ageGroup: questionnaireInputs.age || "N/A",
-          riskCategory: riskCategory,
-          totalScore: totalScore
-        },
-        summary: {
-          riskTolerance: riskCategory === "Conservative" ? "Low" : riskCategory === "Moderate" ? "Medium" : "High",
-          investmentHorizon: questionnaireInputs.horizon || "Not provided",
-          incomeNeed: questionnaireInputs.income || "Not provided"
-        },
-        portfolioAdvisory: {
-          currentAllocation: [
-            { assetClass: "Equities", allocationPercent: 30, comments: "Sample current equity holding" },
-            { assetClass: "Bonds", allocationPercent: 50, comments: "Sample bond holding" },
-            { assetClass: "Cash", allocationPercent: 20, comments: "Sample cash reserve" }
-          ],
-          suggestedAllocation: suggestedAllocation
-        },
-        actionRecommendations: [
-          "Review portfolio annually.",
-          "Rebalance if deviation exceeds 5%.",
-          "Consider tax-efficient investments."
-        ]
-      };
+function generateAdvisory() {
+  const name = document.getElementById("name").value;
+  const ageGroup = document.getElementById("ageGroup").value;
+  const investmentHorizon = document.getElementById("investmentHorizon").value;
+  const riskAttitude = document.getElementById("riskAttitude").value;
 
-      document.getElementById("output").textContent = JSON.stringify(report, null, 2);
-    }
-  </script>
+  const totalScore = calculateScore();
+  const riskCategory = mapScoreToCategory(totalScore);
+
+  // Simple allocation rules
+  let suggestedAllocation;
+  if(riskCategory.includes("Conservative")) {
+    suggestedAllocation = [
+      { assetClass: "Equity", recommendedPercent: 20, reasoning: "Low risk tolerance" },
+      { assetClass: "Debt", recommendedPercent: 60, reasoning: "Stable returns" },
+      { assetClass: "Gold", recommendedPercent: 20, reasoning: "Hedge against inflation" }
+    ];
+  } else if(riskCategory.includes("Moderate")) {
+    suggestedAllocation = [
+      { assetClass: "Equity", recommendedPercent: 40, reasoning: "Balanced growth" },
+      { assetClass: "Debt", recommendedPercent: 40, reasoning: "Risk management" },
+      { assetClass: "Gold", recommendedPercent: 20, reasoning: "Diversification" }
+    ];
+  } else {
+    suggestedAllocation = [
+      { assetClass: "Equity", recommendedPercent: 70, reasoning: "High risk appetite" },
+      { assetClass: "Debt", recommendedPercent: 20, reasoning: "Minimal stability" },
+      { assetClass: "Gold", recommendedPercent: 10, reasoning: "Diversification" }
+    ];
+  }
+
+  const advisory = {
+    investorProfile: {
+      name,
+      ageGroup,
+      riskCategory,
+      totalScore
+    },
+    summary: {
+      riskTolerance: riskCategory,
+      investmentHorizon,
+      incomeNeed: "Based on profile, aim for balanced income and growth."
+    },
+    portfolioAdvisory: {
+      currentAllocation: [
+        { assetClass: "Equity", allocationPercent: 30, comments: "Assumed current average" },
+        { assetClass: "Debt", allocationPercent: 50, comments: "Assumed current average" },
+        { assetClass: "Gold", allocationPercent: 20, comments: "Assumed current average" }
+      ],
+      suggestedAllocation
+    },
+    actionRecommendations: [
+      "Review portfolio annually.",
+      "Increase SIPs if income grows.",
+      "Rebalance portfolio as per suggested allocation."
+    ]
+  };
+
+  document.getElementById("output").textContent = JSON.stringify(advisory, null, 2);
+}
+</script>
 </body>
 </html>
