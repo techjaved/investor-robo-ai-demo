@@ -3,25 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Investor Advisory (Static)</title>
+  <title>Investor Advisory (Static, 10Q)</title>
   <style>
     body { font-family: Arial; padding: 20px; background: #f4f4f4; }
     .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; }
     h2 { margin-top: 30px; }
-    label { display: block; margin-top: 10px; }
-    select, input { width: 100%; padding: 5px; margin-top: 5px; }
+    label { display: block; margin-top: 12px; }
+    select, input { width: 100%; padding: 6px; margin-top: 5px; }
     button { margin-top: 20px; padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:disabled { background: #6c757d; cursor: not-allowed; }
     pre { background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto; }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>Investor Advisory Demo (Static)</h1>
+  <h1>Investor Advisory Demo (Static, 10 Questions)</h1>
 
   <label>Name: <input type="text" id="name" value="Rahul Sharma"></label>
 
-  <label>Age Group:
+  <label>How old are you?
     <select id="ageGroup">
       <option value="Under 30" data-points="17">Under 30</option>
       <option value="31 to 40" data-points="12">31 to 40</option>
@@ -31,21 +30,85 @@
     </select>
   </label>
 
-  <label>Investment Horizon:
+  <label>How long can you keep your money invested before withdrawing it?
     <select id="investmentHorizon">
       <option value="Less than 1 year" data-points="1">Less than 1 year</option>
       <option value="1 to 3 years" data-points="4">1 to 3 years</option>
       <option value="3 to 7 years" data-points="8">3 to 7 years</option>
-      <option value="More than 7 years" data-points="16" selected>More than 7 years</option>
+      <option value="More than 7 years" data-points="16">More than 7 years</option>
     </select>
   </label>
 
-  <label>Risk Attitude:
+  <label>If you have current investments, what is the value of those investments?
+    <select id="currentInvestment">
+      <option value="Half my yearly income" data-points="0">Half my yearly income</option>
+      <option value="Equal to my yearly income" data-points="2">Equal to my yearly income</option>
+      <option value="Double my yearly income" data-points="3">Double my yearly income</option>
+      <option value="Triple my yearly income" data-points="10">Triple my yearly income</option>
+      <option value="More than triple my yearly income" data-points="17">More than triple my yearly income</option>
+    </select>
+  </label>
+
+  <label>How much do you expect your income to grow in the next few years?
+    <select id="incomeGrowth">
+      <option value="Slower than inflation" data-points="1">Slower than inflation</option>
+      <option value="At about the same rate as inflation" data-points="3">At about the same rate as inflation</option>
+      <option value="Much quicker than inflation" data-points="8">Much quicker than inflation</option>
+      <option value="Unpredictable" data-points="0">Unpredictable</option>
+    </select>
+  </label>
+
+  <label>How much insurance do you currently have?
+    <select id="insurance">
+      <option value="Almost none" data-points="0">Almost none</option>
+      <option value="Some" data-points="4">Some</option>
+      <option value="Considerable" data-points="7">Considerable</option>
+      <option value="Almost everything" data-points="10">Almost everything</option>
+    </select>
+  </label>
+
+  <label>What is your Annual Investment Corpus?
+    <select id="investmentAmount">
+      <option value="Less than INR 1,00,000" data-points="0">Less than 1,00,000</option>
+      <option value="INR 1,00,000 – INR 5,00,000" data-points="1">1,00,000 – 5,00,000</option>
+      <option value="INR 5,00,000 – INR 10,00,000" data-points="2">5,00,000 – 10,00,000</option>
+      <option value="More than INR 10,00,000" data-points="6">More than 10,00,000</option>
+    </select>
+  </label>
+
+  <label>When you think of the word "risk," which comes to mind first?
+    <select id="riskPerception">
+      <option value="Danger" data-points="0">Danger</option>
+      <option value="Uncertainty" data-points="1">Uncertainty</option>
+      <option value="Opportunity" data-points="3">Opportunity</option>
+      <option value="Thrill" data-points="6">Thrill</option>
+    </select>
+  </label>
+
+  <label>How do you usually feel about major financial decisions after making them?
+    <select id="marketReaction">
+      <option value="Very pessimistic" data-points="0">Very pessimistic</option>
+      <option value="Somewhat pessimistic" data-points="2">Somewhat pessimistic</option>
+      <option value="Somewhat optimistic" data-points="3">Somewhat optimistic</option>
+      <option value="Very optimistic" data-points="6">Very optimistic</option>
+    </select>
+  </label>
+
+  <label>How do you react to market fluctuations?
+    <select id="decisionReaction">
+      <option value="Very concerned and likely to sell" data-points="0">Very concerned and sell</option>
+      <option value="Likely to sell if lose 5%" data-points="2">Sell if lose 5%</option>
+      <option value="Wait at least a year" data-points="4">Wait at least a year</option>
+      <option value="Stick to long-term plan" data-points="6">Stick to plan</option>
+    </select>
+  </label>
+
+  <label>The expression that best describes your attitude towards risk?
     <select id="riskAttitude">
-      <option value="I prefer to stay away from risks" data-points="0">Stay away from risks</option>
-      <option value="I evaluate carefully before risks" data-points="1">Evaluate carefully</option>
-      <option value="I enjoy taking risks" data-points="3">Enjoy taking risks</option>
-      <option value="I get a thrill from risks" data-points="6">Thrill from risks</option>
+      <option value="I prefer to stay away from risks" data-points="0">Stay away</option>
+      <option value="I evaluate carefully" data-points="1">Evaluate carefully</option>
+      <option value="I enjoy taking risks" data-points="3">Enjoy risks</option>
+      <option value="I get a thrill from risks" data-points="6">Thrill</option>
     </select>
   </label>
 
@@ -59,9 +122,7 @@
 function calculateScore() {
   const selects = document.querySelectorAll("select");
   let total = 0;
-  selects.forEach(sel => {
-    total += parseInt(sel.options[sel.selectedIndex].dataset.points || 0);
-  });
+  selects.forEach(sel => total += parseInt(sel.selectedOptions[0].dataset.points || 0));
   return total;
 }
 
@@ -75,14 +136,24 @@ function mapScoreToCategory(score) {
 
 function generateAdvisory() {
   const name = document.getElementById("name").value;
-  const ageGroup = document.getElementById("ageGroup").value;
-  const investmentHorizon = document.getElementById("investmentHorizon").value;
-  const riskAttitude = document.getElementById("riskAttitude").value;
-
   const totalScore = calculateScore();
   const riskCategory = mapScoreToCategory(totalScore);
 
-  // Simple allocation rules
+  // Collect questionnaire inputs
+  const questionnaireInputs = {
+    ageGroup: document.getElementById("ageGroup").value,
+    investmentHorizon: document.getElementById("investmentHorizon").value,
+    currentInvestment: document.getElementById("currentInvestment").value,
+    incomeGrowth: document.getElementById("incomeGrowth").value,
+    insurance: document.getElementById("insurance").value,
+    investmentAmount: document.getElementById("investmentAmount").value,
+    riskPerception: document.getElementById("riskPerception").value,
+    marketReaction: document.getElementById("marketReaction").value,
+    decisionReaction: document.getElementById("decisionReaction").value,
+    riskAttitude: document.getElementById("riskAttitude").value
+  };
+
+  // Suggested allocation logic
   let suggestedAllocation;
   if(riskCategory.includes("Conservative")) {
     suggestedAllocation = [
@@ -105,30 +176,26 @@ function generateAdvisory() {
   }
 
   const advisory = {
-    investorProfile: {
-      name,
-      ageGroup,
-      riskCategory,
-      totalScore
-    },
+    investorProfile: { name, ageGroup: questionnaireInputs.ageGroup, riskCategory, totalScore },
     summary: {
       riskTolerance: riskCategory,
-      investmentHorizon,
-      incomeNeed: "Based on profile, aim for balanced income and growth."
+      investmentHorizon: questionnaireInputs.investmentHorizon,
+      incomeNeed: "Tailored based on income growth and corpus."
     },
     portfolioAdvisory: {
       currentAllocation: [
-        { assetClass: "Equity", allocationPercent: 30, comments: "Assumed current average" },
-        { assetClass: "Debt", allocationPercent: 50, comments: "Assumed current average" },
-        { assetClass: "Gold", allocationPercent: 20, comments: "Assumed current average" }
+        { assetClass: "Equity", allocationPercent: 30, comments: "Assumed average" },
+        { assetClass: "Debt", allocationPercent: 50, comments: "Assumed average" },
+        { assetClass: "Gold", allocationPercent: 20, comments: "Assumed average" }
       ],
       suggestedAllocation
     },
     actionRecommendations: [
-      "Review portfolio annually.",
-      "Increase SIPs if income grows.",
-      "Rebalance portfolio as per suggested allocation."
-    ]
+      "Review and rebalance annually.",
+      "Increase equity exposure gradually if horizon is long.",
+      "Maintain emergency fund equal to 6 months of expenses."
+    ],
+    questionnaireInputs
   };
 
   document.getElementById("output").textContent = JSON.stringify(advisory, null, 2);
